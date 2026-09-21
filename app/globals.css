@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Design tokens
+
+   The palette is sampled straight from the bistro's own photographs:
+   the plaster wall behind the painted quote, the filament bulbs over
+   the pass, the herbs on the plates, the crust on the croissants.
+   ------------------------------------------------------------------ */
+@theme {
+  --color-paper: #f6f1e7;
+  --color-paper-deep: #ebe3d4;
+  --color-paper-dark: #ded3bd;
+
+  --color-ink: #16130f;
+  --color-ink-soft: #4a4339;
+  --color-ink-faint: #8a8071;
+
+  --color-olive: #33452f;
+  --color-olive-deep: #25331f;
+  --color-terracotta: #c2703a;
+  --color-clay: #a2422f;
+  --color-straw: #d8be86;
+
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Shared motion language. Every transition on the site uses one of
+     these so the small interactions feel like the big slide. */
+  --ease-slide: cubic-bezier(0.62, 0.05, 0.14, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+@layer base {
+  html {
+    /* The pinned horizontal track does its own scroll maths, so the
+       browser must not also try to smooth-scroll anchor jumps. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    /* Slovenian sits in Latin Extended-A; make sure the fallback chain
+       never substitutes a face without č/š/ž/đ. */
+    font-variant-ligatures: common-ligatures;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-straw);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Paper grain
+
+   A single feTurbulence baked into a data URI: no network request, and
+   it tiles at any size. Kept very low contrast — it should read as the
+   tooth of the paper, never as noise.
+   ------------------------------------------------------------------ */
+@utility grain {
+  position: relative;
+}
+
+@utility grain-layer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  opacity: 0.16;
+}
+
+/* ------------------------------------------------------------------
+   Typographic helpers
+   ------------------------------------------------------------------ */
+
+/** Small caps label above a heading. */
+@utility kicker {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-terracotta);
+}
+
+/**
+ * Dotted leader between a dish name and its price, the way it is set on
+ * a printed menu. The rule lives in its own flex child so it absorbs all
+ * the slack, which keeps prices in a hard right column.
+ */
+@utility leader {
+  flex: 1 1 auto;
+  align-self: end;
+  margin-bottom: 0.35em;
+  border-bottom: 1px dotted color-mix(in oklab, var(--color-ink-faint) 55%, transparent);
+  min-width: 1.5rem;
+}
+
+/* ------------------------------------------------------------------
+   Motion
+
+   Everything below is additive polish. When the visitor asks for
+   reduced motion the site still renders completely — the GSAP timeline
+   is never built, and these fallbacks make the result look deliberate
+   rather than broken.
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Torn-edge clip paths
+
+   These are plain CSS rather than Tailwind arbitrary values because the
+   tear id is chosen per panel at runtime, and Tailwind only generates
+   classes it can find as literal strings in the source.
+
+   Below `lg` the chapter panels stack vertically, so the rip rotates
+   from the trailing edge to the bottom edge.
+   ------------------------------------------------------------------ */
+.tear-a { clip-path: url(#torn-a-b); }
+.tear-a-lip { clip-path: url(#torn-a-b-lip); }
+.tear-b { clip-path: url(#torn-b-b); }
+.tear-b-lip { clip-path: url(#torn-b-b-lip); }
+.tear-c { clip-path: url(#torn-c-b); }
+.tear-c-lip { clip-path: url(#torn-c-b-lip); }
+
+@media (min-width: 64rem) {
+  .tear-a { clip-path: url(#torn-a); }
+  .tear-a-lip { clip-path: url(#torn-a-lip); }
+  .tear-b { clip-path: url(#torn-b); }
+  .tear-b-lip { clip-path: url(#torn-b-lip); }
+  .tear-c { clip-path: url(#torn-c); }
+  .tear-c-lip { clip-path: url(#torn-c-lip); }
+}
+
+/** Vertical running text, used for the small scroll hint on the hero. */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}

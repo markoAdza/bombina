@@ -7,9 +7,8 @@ import type { Dictionary } from "@/content/i18n";
 /**
  * Chapter two — who is behind the bistro.
  *
- * The hand-painted invitation by the door is the best thing they own, so it
- * gets the photograph; the portrait of Urh and Barbara sits over the tear as
- * a near layer, which gives the panel real depth as it travels.
+ * The portrait of Urh and Barbara sits over the torn photograph as a near
+ * layer, which gives the panel real depth as it travels.
  */
 export function About({ dict }: { dict: Dictionary }) {
   return (
@@ -20,27 +19,12 @@ export function About({ dict }: { dict: Dictionary }) {
       >
         <TornPhoto
           src="/images/about-wall.webp"
-          alt={dict.wallQuote}
+          alt=""
           tear={1}
           sizes="(min-width: 1024px) 46vw, 100vw"
           objectPosition="50% 46%"
           className="h-full w-full"
         />
-      </ParallaxLayer>
-
-      {/* The painted quote, set over the photograph it was taken from. */}
-      <ParallaxLayer
-        depth={-0.2}
-        className="absolute inset-x-7 top-[30svh] z-10 lg:inset-x-auto lg:top-auto lg:bottom-[14%] lg:left-[6%] lg:w-[24rem]"
-      >
-        <figure className="max-w-[22rem] bg-straw px-6 py-5 shadow-[0_18px_40px_-24px_rgba(22,19,15,0.55)]">
-          <blockquote className="font-display text-[1.25rem] leading-snug text-ink">
-            {dict.wallQuote}
-          </blockquote>
-          <figcaption className="mt-2 text-[0.6875rem] uppercase tracking-[0.16em] text-ink/55">
-            {dict.wallQuoteNote}
-          </figcaption>
-        </figure>
       </ParallaxLayer>
 
       <ParallaxLayer

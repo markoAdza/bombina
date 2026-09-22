@@ -28,7 +28,7 @@ export const sl = {
   heroKicker: "Trbovlje · Zasavje",
   heroLead: "Majhna restavracija s preprosto, a kakovostno kuhinjo.",
   heroSub: "Dobra hrana, dobra pijača in dva človeka, ki jima je mar.",
-  heroScroll: "Drsaj naprej",
+  heroScroll: "",
 
   /* ---- about ------------------------------------------------------ */
   aboutKicker: "Kaj in kdo je Bistro Bombina",

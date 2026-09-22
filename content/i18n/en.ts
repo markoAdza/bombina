@@ -29,7 +29,7 @@ export const en: Dictionary = {
   heroKicker: "Trbovlje · Slovenia",
   heroLead: "A small restaurant serving simple, carefully made food.",
   heroSub: "Good food, good drink, and two people who care about both.",
-  heroScroll: "Slide onward",
+  heroScroll: "",
 
   /* ---- about ------------------------------------------------------ */
   aboutKicker: "What and who Bistro Bombina is",
